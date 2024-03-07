@@ -38,6 +38,6 @@ pi_2 = np.array([0, 3, 3, 3,
 pi_random = np.random.choice(4, 16)
 
 P = env.unwrapped.P  # transition probabilities (MDP)
-v, count = policy_evaluation(pi_random, P)  # policy evaluation
+v, count = policy_evaluation(pi_2, P)  # policy evaluation
 print("Number of iterations: ", count)
 print(v.reshape(4, 4))
