@@ -3,6 +3,22 @@ import numpy as np
 env = gym.make('FrozenLake-v1', desc=None, map_name="4x4", is_slippery=True)
 
 def value_iteration(P, gamma=0.99, theta=1e-10):
+    """
+    Perform value iteration to find the optimal value function and policy.
+
+    Parameters:
+    - P (dict): A dictionary representing the transition probabilities of the MDP.
+    - gamma: float, optional
+        - Discount factor for future rewards (default: 0.99)
+    - theta: float, optional
+        - Convergence threshold (default: 1e-10)
+
+    Returns:
+    - v: numpy array
+        - Optimal value function
+    - pi: lambda function
+        - Optimal policy function, where pi(s) returns the optimal action for state s
+    """
 
     v = np.zeros(len(P), dtype=np.float64)
 
@@ -25,7 +41,7 @@ def value_iteration(P, gamma=0.99, theta=1e-10):
 P = env.unwrapped.P  # transition probabilities (MDP)
 v, pi = value_iteration(P)  # value iteration
 
-print_ = True
+print_ = False
 if print_:
     print('Value Function: ')
     print(v.reshape(4, 4))

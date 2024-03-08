@@ -5,6 +5,18 @@ from PolicyEvaluation import policy_evaluation, P
 env = gym.make('FrozenLake-v1', desc=None, map_name="4x4", is_slippery=True)
 
 def policy_improvement(V, P, gamma=0.99):
+    """
+    Performs policy improvement given the value function and the transition probabilities.
+
+    Parameters:
+        V (numpy.ndarray): The value function for each state.
+        P (list): The transition probabilities for each state-action pair.
+        gamma (float, optional): The discount factor. Defaults to 0.99.
+
+    Returns:
+        tuple: A tuple containing the new policy function and the Q-values.
+
+    """
     Q = np.zeros((len(P), len(P[0])), dtype=np.float64)
     for s in range(len(P)):
         for a in range(len(P[s])):

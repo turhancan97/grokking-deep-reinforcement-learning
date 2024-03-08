@@ -3,6 +3,19 @@ import numpy as np
 env = gym.make('FrozenLake-v1', desc=None, map_name="4x4", is_slippery=True)
 
 def policy_evaluation(pi, P, gamma=0.99, theta=1e-10):
+    """
+    Evaluate the value function for a given policy using iterative policy evaluation.
+
+    Parameters:
+    - pi (list): The policy, where pi[s] is the action to take in state s.
+    - P (list): The transition probabilities and rewards for each state-action pair.
+    - gamma (float): Discount factor for future rewards (default: 0.99).
+    - theta (float): Threshold for convergence (default: 1e-10).
+
+    Returns:
+    - v (list): The value function, where v[s] is the estimated value of state s.
+    - count (int): The number of iterations until convergence.
+    """
     prev_v = np.zeros(len(P))
     count = 0
     while True:
