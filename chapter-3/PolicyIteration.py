@@ -24,12 +24,12 @@ def policy_iteration(P, gamma=0.99, theta=1e-10):
 
 P = env.unwrapped.P  # transition probabilities (MDP)
 v, pi = policy_iteration(P)  # policy iteration
-print('Value Function: ')
-print(v.reshape(4, 4))
-
-print_ = True
+print_ = False
 if print_:
-    list_pi = np.array([pi(i) for i in range(16)])
-    print()
-    print('New policy:')
-    print(list_pi.reshape(4, 4))
+    print('Value Function: ')
+    print(v.reshape(4, 4))
+    if print_:
+        list_pi = np.array([pi(i) for i in range(16)])
+        print()
+        print('New policy:')
+        print(list_pi.reshape(4, 4))
