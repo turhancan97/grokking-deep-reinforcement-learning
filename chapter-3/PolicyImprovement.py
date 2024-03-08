@@ -31,16 +31,18 @@ pi = np.array([0, 3, 3, 3,
 v, count = policy_evaluation(pi, P)  # policy evaluation
 
 new_pi, Q = policy_improvement(v, P)  # policy improvement
-# print new_pi
-list_pi = np.array([new_pi(i) for i in range(16)])
-print()
-print('New policy:')
-print(list_pi.reshape(4, 4))
 
-env_dict = dict()
-for i in range(4):
-    for j in range(4):
-        env_dict[(i, j)] = Q[j]
-print()
-print('Q values:')
-print(env_dict)
+print_ = False
+if print_:
+    list_pi = np.array([new_pi(i) for i in range(16)])
+    print()
+    print('New policy:')
+    print(list_pi.reshape(4, 4))
+
+    env_dict = dict()
+    for i in range(4):
+        for j in range(4):
+            env_dict[(i, j)] = Q[j]
+    print()
+    print('Q values:')
+    print(env_dict)
