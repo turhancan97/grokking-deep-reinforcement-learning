@@ -6,20 +6,28 @@ import numpy as np
 import random
 from tqdm import tqdm
 import gymnasium as gym
-from utils import decay_schedule, generate_trajectory, plot_value_function
-from enviroments.RandomWalk import RandomWalkEnv
+from utils import decay_schedule,generate_trajectory, plot_value_function, policy_evaluation, rmse
+from utils import print_state_value_function, print_policy, probability_success, mean_return
+import gym_walk
 import matplotlib.pyplot as plt
+SEEDS = (12, 34, 56, 78, 90)
 
 environment = gym.make("RandomWalk-v0")
 init_state, info = environment.reset(seed=42)
 goal_state = 6
 gamma = 1.0
 n_episodes = 500
+P = environment.env.P
 
 LEFT, RIGHT = range(2)
 pi = lambda s: {0: LEFT, 1: LEFT, 2: LEFT, 3: LEFT, 4: LEFT, 5: LEFT, 6: LEFT}[s]
-SEEDS = (12, 34, 56, 78, 90)
-
+V_true = policy_evaluation(pi, P, gamma=gamma)
+print_state_value_function(V_true, P, n_cols=7)
+print()
+print_policy(pi, P, action_symbols=('<', '>'), n_cols=7)
+print('Reaches goal {:.2f}%. Obtains an average return of {:.4f}.'.format(
+    probability_success(environment, pi, goal_state=goal_state), 
+    mean_return(environment, gamma, pi)))
 
 def mc_prediction(
     pi,
@@ -75,9 +83,13 @@ V_fvmc, V_track_fvmc = np.mean(V_fvmcs, axis=0), np.mean(V_track_fvmcs, axis=0)
 del V_fvmcs
 del V_track_fvmcs
 
+print_state_value_function(V_fvmc, P, n_cols=7)
+print()
+print_state_value_function(V_fvmc - V_true, P, n_cols=7, title='State-value function errors:')
+print('RMSE:', rmse(V_fvmc, V_true))
 
 plot_value_function(
-    "FVMC estimates through time vs. true values", V_track_fvmc, None, log=False
+    "FVMC estimates through time vs. true values", V_track_fvmc, V_true, log=False
 )
 
 V_evmcs, V_track_evmcs = [], []
@@ -95,6 +107,11 @@ V_evmc, V_track_evmc = np.mean(V_evmcs, axis=0), np.mean(V_track_evmcs, axis=0)
 del V_evmcs
 del V_track_evmcs
 
+print_state_value_function(V_evmc, P, n_cols=7)
+print()
+print_state_value_function(V_evmc - V_true, P, n_cols=7, title='State-value function errors:')
+print('RMSE:', rmse(V_evmc, V_true))
+
 plot_value_function(
-    "EVMC estimates through time vs. true values", V_track_evmc, None, log=False
+    "EVMC estimates through time vs. true values", V_track_evmc, V_true, log=False
 )
