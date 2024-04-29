@@ -4,7 +4,7 @@ sys.path.append("../")
 import numpy as np
 from tqdm import tqdm
 import gymnasium as gym
-from enviroments.BanditWalk import SlipperyBanditWalk
+from gym_walk.BanditWalk import SlipperyBanditWalk
 
 # Create and use the environment
 environment = gym.make("BanditSlipperyWalk-v0")
