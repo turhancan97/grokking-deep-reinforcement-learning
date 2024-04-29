@@ -59,8 +59,10 @@ class WalkEnv(gym.Env):
         i = categorical_sample([t[0] for t in transitions], self.np_random)
         p, s, r, d = transitions[i]
         self.s = s
+        self.p = p
         self.lastaction = action
-        return (int(s), r, d, {"prob": p}, self._get_info())
+        truncated = False
+        return (int(s), r, d, truncated, self._get_info())
 
     def reset(
         self,
@@ -72,10 +74,11 @@ class WalkEnv(gym.Env):
         super().reset(seed=seed)
         self.s = categorical_sample(self.isd, self.np_random)
         self.lastaction = None
+        self.p = 0.0
         return int(self.s), self._get_info()
     
     def _get_info(self):
-        return {"state": self.s}
+        return {"prob": self.p}
 
     def render(self, mode='human', close=False):
         outfile = StringIO() if mode == 'ansi' else sys.stdout
