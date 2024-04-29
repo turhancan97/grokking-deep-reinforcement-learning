@@ -29,7 +29,7 @@ init_state, info = environment.reset(seed=42)
 goal_state = 6
 gamma = 1.0
 n_episodes = 500
-P = environment.unwrapped.P
+P = environment.unwrapped.P # Transition probabilities
 
 LEFT, RIGHT = range(2)
 pi = lambda s: {0: LEFT, 1: LEFT, 2: LEFT, 3: LEFT, 4: LEFT, 5: LEFT, 6: LEFT}[s]
